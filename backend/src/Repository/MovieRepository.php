@@ -20,6 +20,17 @@ class MovieRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Movie::class);
     }
+    public function findSortedMovies($sortBy, $sortOrder)
+    {
+        $qb = $this->createQueryBuilder('m');
+
+        if ($sortBy === 'recente') {
+            $qb->orderBy('m.releaseDate', $sortOrder);
+        } elseif ($sortBy === 'rating') {
+            $qb->orderBy('m.rating', $sortOrder);
+        }
+        return $qb->getQuery()->getResult();
+    }
 
     //    /**
     //     * @return Movie[] Returns an array of Movie objects
